@@ -1,0 +1,39 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Sign In</h2>
+  
+    <form action="/admin" method="POST">
+        <div class="mb-3">
+            <label for="username" class="form-label"><b>Username</b></label>
+            <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" required>
+        </div>
+  
+        <div class="mb-3 position-relative">
+            <label for="password" class="form-label"><b>Password</b></label>
+            <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" required>
+            <button type="button" class="btn btn-secondary position-absolute top-50 end-0 translate-middle-y" id="togglePassword">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+  
+        <button type="submit" class="main-btn">Login</button>
+    </form>
+  </div>
+  <div class="container mt-5">
+    <h2 class="mb-4">Register</h2>
+  
+    <form action="/register" method="POST">
+        <div class="mb-3">
+            <label for="username" class="form-label"><b>Username</b></label>
+            <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" required>
+        </div>
+  
+        <div class="mb-3 position-relative">
+            <label for="password" class="form-label"><b>Password</b></label>
+            <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" required>
+            <button type="button" class="btn btn-secondary position-absolute top-50 end-0 translate-middle-y" id="togglePassword">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+  
+        <button type="submit" value="register" class="main-btn">Register</button>
+    </form>

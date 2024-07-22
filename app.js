@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const expressLayout = require('express-ejs-layouts')
 const methodOverRide=require('method-override')
+const connectdb=require('./server/config/db')
 const cookieParser = require('cookie-parser');
 const MongoStore =require('connect-mongo');
 const session = require('express-session');
-const connectdb=require('./server/config/db')
 const isActiveRoute=require('./server/helpers/routeHelpers')
 const app = express();
 const PORT = 5900 || process.env.PORT;
@@ -31,6 +31,7 @@ app.set('layout','./layouts/main');
 app.set('view engine','ejs');
 app.locals.isActiveRoute=isActiveRoute
 app.use('/',require('./server/routers/main'))
+app.use('/',require('./server/routers/admin'))
 app.listen(PORT,()=>{
     console.log(`app listeing on the port ${PORT} `)
 })
