@@ -323,3 +323,12 @@ search bar design
   .nodebaba{
     color: var(--third-color);
   }
+
+  .card {
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .weather-icon {
+    width: 70px;
+    margin-bottom: 5px;
+  }
