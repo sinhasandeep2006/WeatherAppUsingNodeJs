@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken');
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
 const cookieParser = require('cookie-parser');
-
+const axios = require("axios");
+// const APIUrl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 // Ensure you use the cookie parser middleware in your main app file
 // const app = express();
 // app.use(cookieParser());
@@ -89,4 +90,26 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-module.exports = router;
+router.get('/dashboard',authMiddleware,async (req, res) => {
+    try {
+        res.render('admin/dashboard', { layout: adminLayout });
+    } catch (error) {
+        console.log(error);
+    }
+});
+// Create a route to fetch weather data
+router.get('/dashboard', async (req, res) => {
+    const city = req.query.city || 'Pune';
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+    try {
+        const response = await axios.get(url);
+        res.render('admin/dashboard', { weatherData: response.data });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+module.exports=router

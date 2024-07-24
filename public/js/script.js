@@ -93,6 +93,7 @@ async function checkWeather(city, elementId) {
     }
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
     checkWeather("New Delhi", "weather-new-delhi");
     checkWeather("USA", "weather-usa");
