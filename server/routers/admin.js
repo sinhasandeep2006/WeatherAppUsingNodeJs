@@ -6,11 +6,9 @@ const jwt = require('jsonwebtoken');
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
 const cookieParser = require('cookie-parser');
-const axios = require("axios");
-// const APIUrl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-// Ensure you use the cookie parser middleware in your main app file
-// const app = express();
-// app.use(cookieParser());
+const apikey=process.env.apikey
+
+
 
 const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
@@ -55,7 +53,7 @@ router.post('/admin', async (req, res) => {
         }
         const token = jwt.sign({ userId: user._id }, jwtSecret);
         res.cookie('token', token, { httpOnly: true });
-        res.redirect('/admin');
+        res.redirect('/dashboard');
     } catch (error) {
         console.log(error);
     }
@@ -90,26 +88,26 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-router.get('/dashboard',authMiddleware,async (req, res) => {
-    try {
-        res.render('admin/dashboard', { layout: adminLayout });
-    } catch (error) {
-        console.log(error);
-    }
-});
 // Create a route to fetch weather data
-router.get('/dashboard', async (req, res) => {
-    const city = req.query.city || 'Pune';
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-
+router.get('/weather', async (req, res) => {
     try {
-        const response = await axios.get(url);
-        res.render('admin/dashboard', { weatherData: response.data });
+        const city = req.query.city || 'tokyo';
+        const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apikey}`;
+
+        const response = await fetch(url);
+        const weatherData = await response.json();
+        const hasWeatherData = response.ok;
+
+        res.json({ weatherData, hasWeatherData });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Server Error');
+        res.json({ weatherData: null, hasWeatherData: false });
     }
 });
 
+// Dashboard route
+router.get('/dashboard', authMiddleware, async (req, res) => {
+    res.render('admin/dashboard', { layout: adminLayout });
+});
 
-module.exports=router
+module.exports = router;

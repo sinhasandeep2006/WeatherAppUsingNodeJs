@@ -98,23 +98,38 @@ document.addEventListener('DOMContentLoaded', function() {
 //     checkWeather(searchBox.value);
 // });
 
+
+
 document.getElementById('search-btn').addEventListener('click', async () => {
     const city = document.getElementById('city-input').value;
     const weatherInfo = document.getElementById('weather-info');
     const errorMsg = document.getElementById('error-msg');
-
+    
     try {
         const response = await fetch(`/weather?city=${city}`);
         if (!response.ok) {
             throw new Error('City not found');
         }
-        const data = await response.text();
-        document.open();
-        document.write(data);
-        document.close();
+        const data = await response.json();
+        const weatherData = data.weatherData;
+
+        if (!data.hasWeatherData) {
+            throw new Error('No weather data available');
+        }
+
+        // Update the DOM with weather data
+        document.getElementById('weather-icon').src = `/img/${weatherData.weather[0].main.toLowerCase()}.png`;
+        document.getElementById('temp').textContent = `${weatherData.main.temp}°C`;
+        document.getElementById('city-name').textContent = `${weatherData.name}, ${weatherData.sys.country}`;
+        document.getElementById('humidity').textContent = `${weatherData.main.humidity}%`;
+        document.getElementById('wind-speed').textContent = `${weatherData.wind.speed} km/h`;
+
+        weatherInfo.style.display = 'block';
         errorMsg.style.display = 'none';
     } catch (error) {
+        console.error(error);
         weatherInfo.style.display = 'none';
+        errorMsg.textContent = error.message;
         errorMsg.style.display = 'block';
     }
 });
